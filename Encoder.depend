@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1600240982 source:d:\codeblocks\encoder\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
