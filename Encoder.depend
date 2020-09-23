@@ -1,7 +1,12 @@
 # depslib dependency file v1.0
-1600246342 source:d:\codeblocks\encoder\main.c
+1600848421 source:d:\codeblocks\encoder\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<math.h>
+
+1600246471 source:c:\users\schule\desktop\codeblocks\encoder\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 
