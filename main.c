@@ -7,8 +7,6 @@
 Erstellt von:
 Sascha Rutz
 Simon Chatziparaskewas
-
-
 */
 
 void encode(short key, char Input[]);
@@ -18,24 +16,26 @@ char Output[sizeof(long)] = {' '};   //The Output string
 int main()
 {
     char MEDcoder = 0;//variable mode select En/Decoder
-
+    short Key = 0;
     char String[sizeof(long)] = {' '};
 
     while((MEDcoder != 'y') && (MEDcoder != 'Y'))
     {
-       printf("Wilkommen\n Dies ist ein Encoder/ Decoder.\n Waelen sie\n A fuer Encoder\n B fuer Decoder\n ");
-       scanf("%c", &MEDcoder);
-       getchar();
+        if(MEDcoder != 1){
+            printf("Wilkommen\n Dies ist ein Encoder/ Decoder.\n Waelen sie\n A fuer Encoder\n B fuer Decoder\n ");
+            scanf("%c", &MEDcoder);
+            getchar();
+        }
        switch(MEDcoder)
        {
         case 'A':
         case 'a'://modus encoder
             printf("Sie haben den Modus Encoder Gewaehlt.\n Bitte geben sie einen gewuenschten Schluessel zwischen 2 und 10 ein.\n Dieser wird zum Decoden des Textes benoetigt.\n ");
-            encode(2, "TestTestTestTestTest");
-            printf("%s\n", Output);
-    /*        scanf("%f", &key); //get variable key
+            scanf("%d", &Key); //get variable key
             getchar();
-    */
+            encode(Key, "TestTestTestTestTest");
+            printf("%s\n", Output);
+
             MEDcoder = 1;
             break;
 
@@ -52,7 +52,7 @@ int main()
             printf("Programm beenden = y\n fortfahren = enter\n ");
             scanf("%c", &MEDcoder);
             break;
-       }
+       }//end switch case
     }//end while
 return 0;
 }
@@ -87,7 +87,7 @@ void encode(short key, char Input[])   //encoding key is row count, Input is inp
         for(RowPos = 0; RowPos < RowLength; RowPos++)
         {
             Output[stringPos] = Output2D[Row][RowPos];
-            printf("%c\n",Output[stringPos]);
+
             stringPos++;
         }
     }
