@@ -31,12 +31,12 @@ int main()
         case 'A':
         case 'a'://modus encoder
             printf("Sie haben den Modus Encoder Gewaehlt.\n Bitte geben sie einen gewuenschten Schluessel zwischen 2 und 10 ein.\n Dieser wird zum Decoden des Textes benoetigt.\n ");
-            encode(10, "TestTestTestTestTest");
+            encode(2, "TestTestTestTestTest");
             printf("%s\n", Output);
     /*        scanf("%f", &key); //get variable key
             getchar();
     */
-
+            MEDcoder = 1;
             break;
 
         case 'B':
