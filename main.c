@@ -12,7 +12,7 @@ Simon Chatziparaskewas
 void encode(short key, char Input[]);
 void decode(short key, char Input[]);
 
-unsigned char Output[256] = {0};   //The Output string
+unsigned char Output[260] = {0};   //The Output string
 
 short d = 0;
 
@@ -20,7 +20,7 @@ int main()
 {
     char MEDcoder = 0;//variable mode select En/Decoder
     short Key = 0;
-    unsigned char Input[256] = {' '};   //The Input string
+    unsigned char Input[270] = {0};   //The Input string
 
     while((MEDcoder != 'y') && (MEDcoder != 'Y'))
     {
@@ -38,11 +38,11 @@ int main()
             scanf("%d", &Key); //get variable key
             getchar();
             printf("Bitte geben sie die zu encodierende Nachricht ein\n");
-            fgets(Input, 256, stdin);   //get message from user
+            fgets(Input, 257, stdin);   //get message from user
             printf("%s", Input);
             encode(Key, Input); //Encode Message
 
-            printf("\n-------------------------------------------\n");
+            printf("\nstrlen Output %d\nsize Output %d\n-------------------------------------------\n", strlen(Output), sizeof(Output));
             printf("Ihre Encodierte Nachricht:\n%s\n", Output);
 
             getchar();
@@ -56,7 +56,7 @@ int main()
             scanf("%d", &Key); //get variable key
             getchar();
             printf("Bitte geben sie die zu decodierende Nachricht ein\n");
-            fgets(Input, 256, stdin);   //get Encoded message from user
+            fgets(Input, 270, stdin);   //get Encoded message from user
             printf("%s", Input);
             decode(Key, Input);
             printf("Ihre Decodierte Nachricht:\n%s\n", Output);
@@ -80,10 +80,10 @@ return 0;
 void encode(short key, char Input[])   //encoding key is row count, Input is input to encode
 {
     short LengthInput = strlen(Input);  //Length of input string
-    short RowLength = ceil((float)LengthInput / (float)key);   //Length of Row
+    short RowLength = (short)ceil((float)LengthInput / (float)key) + 1;   //Length of Row
     unsigned char Output2D[key][RowLength];  //2d Array used for encoding
     memset(Output2D, ' ', key * RowLength * sizeof(char));  //define Output2D array
-    memset(Output, ' ', 256 * sizeof(char));    //Empty global string Output
+    memset(Output, ' ', 260 * sizeof(char));    //Empty global string Output
 
     short Row = 0;   //Counting variable for Rows
     short RowPos = 0;    //Counting variable for Position in a row
@@ -122,7 +122,7 @@ void encode(short key, char Input[])   //encoding key is row count, Input is inp
     stringPos = 0;
     for(Row = 0; Row < key; Row++)
     {
-        for(RowPos = 0; (RowPos < RowLength) && (Output2D[Row][RowPos] != 0); RowPos++)
+        for(RowPos = 0; (RowPos < RowLength); RowPos++)
         {
             while((Output2D[Row][RowPos] >= 0) && (Output2D[Row][RowPos] <= 31) && (Row < key))  //Filter out non printable characters
             {
@@ -141,6 +141,15 @@ void encode(short key, char Input[])   //encoding key is row count, Input is inp
                 printf("Output2D[%d][%d] %c    Output[%d] %d\n", Row, RowPos, Output2D[Row][RowPos], stringPos, Output[stringPos]);
                 stringPos++;
             }
+
+            if((stringPos < LengthInput))
+            {
+                Output[stringPos] = Output2D[Row][RowPos];
+            }
+            else
+            {
+                Output[stringPos] = 0;
+            }
         }
         printf("\n");
     }
@@ -152,8 +161,8 @@ void decode(short key, char Input[])   //encoding key is row count, Input is inp
     short LengthInput = strlen(Input);  //Length of input string
     short RowLength = ceil((float)LengthInput / (float)key);   //Length of Row
     unsigned char Output2D[key][RowLength];  //2d Array used for encoding
-    memset(Output2D, 0, key * RowLength * sizeof(char));  //define Output2D array
-    memset(Output, 0, 256 * sizeof(char));    //Empty global string Output
+    memset(Output2D, ' ', key * RowLength * sizeof(char));  //define Output2D array
+    memset(Output, ' ', 260 * sizeof(char));    //Empty global string Output
 
     short Row = 0;   //Counting variable for Rows
     short RowPos = 0;    //Counting variable for Position in a row
@@ -165,12 +174,12 @@ void decode(short key, char Input[])   //encoding key is row count, Input is inp
     {
         for(RowPos = 0; (RowPos < RowLength); RowPos++)
         {
-            while((Input[stringPos] >= 0) && (Input[stringPos] <= 31) && (stringPos < LengthInput))  //Filter out non printable characters
+            while((Input[stringPos] >= 0) && (Input[stringPos] <= 31) && (stringPos <= LengthInput))  //Filter out non printable characters
             {
                 printf("(Filter)Output2D[%d][%d] %c    Input[%d] %c\n", Row, RowPos, Output2D[Row][RowPos], stringPos, Input[stringPos]);
                 stringPos++;
             }
-            if((stringPos < LengthInput))
+            if((stringPos <= LengthInput))
             {
                 Output2D[Row][RowPos] = Input[stringPos];
                 printf("Output2D[%d][%d] %c    Input[%d] %c\n", Row, RowPos, Output2D[Row][RowPos], stringPos, Input[stringPos]);
@@ -210,7 +219,11 @@ void decode(short key, char Input[])   //encoding key is row count, Input is inp
                     RowPos++;
                 }
             }
-            Output[stringPos] = Output2D[Row][RowPos];
+            if((stringPos < LengthInput))
+            {
+                Output[stringPos] = Output2D[Row][RowPos];
+            }
+
             printf("Output2D[%d][%d] %c    Output[%d] %d\n", Row, RowPos, Output2D[Row][RowPos], stringPos, Output[stringPos]);
             stringPos++;
         }
