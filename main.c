@@ -110,6 +110,7 @@ int main()
 return 0;
 }
 
+
 void encode(short key, char Input[])   //encoding key is row count, Input is input to encode
 {
     short LengthInput = strlen(Input);  //Length of input string
@@ -219,7 +220,7 @@ void decode(short key, char Input[])   //decoding key is row count, Input is inp
                 Row++;
                 if(Row == key)  //Check if last row has been reached
                 {
-                    Row = 0;    //Go to Roq 0
+                    Row = 0;    //Go to Row 0
                     RowPos++;   //Go to next row position
                 }
             }
