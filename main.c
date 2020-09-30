@@ -15,13 +15,14 @@ Beschreibung: En\decodet max. 256 zeichen mit einem vorgegebenem schluessel.
 
 void encode(short key, char Input[]);
 void decode(short key, char Input[]);
+void cbuff (void);
 
 unsigned char Output[260] = {0};   //The Output string
 
 int main()
 {
     char MEDcoder = 0;//variable mode select En/Decoder
-    char OverflowBuff[200] = {0};
+    char OverflowBuff[200] = {0};//used to store overflow characters
     short Key = 0;
     unsigned char Input[270] = {0};   //The Input string
 
@@ -34,7 +35,7 @@ int main()
             do
             {
                 scanf("%c", &MEDcoder);
-                getchar();
+                cbuff();
                 if(!(MEDcoder == 'A' || MEDcoder == 'a' || MEDcoder == 'B' || MEDcoder == 'b')) //Check if the input is a allowed Letter
                 {
                     printf("Eingabe muss entweder A oder B sein\n");    //Tell User that his input was a illegal letter
@@ -51,7 +52,7 @@ int main()
             do
             {
                 scanf("%d", &Key); //get variable key
-                getchar();
+                cbuff();
                 if(Key < 2 || Key > 10) //Check if the input is inside allowed Range
                 {
                     printf("Schluessel auserhalb des erlaubten Bereichs Zahl muss zwischen 2 und 10 sein\n");   //Tell User that his input was outside the allowed area
@@ -62,24 +63,23 @@ int main()
 
             do
             {
-                getchar();
-                fgets(Input, 257, stdin);   //get message from user
 
+                fgets(Input, 259, stdin);   //get message from user
+                fgets(OverflowBuff,200,stdin);//used to remove overflow characters
                 //Check if message longer than 256
                 //================================================================
-                if(!(strlen(Input) < 257))
+                if(!(strlen(Input) < 258))
                 {
                     printf("\nNachricht ist laenger als 256 zeichen\n");    //Inform user that message is too long
                 }
-            }while(!(strlen(Input) < 257));
-            //====================================================================
+            }while(!(strlen(Input) < 258));
+            //===================================================================
 
             encode(Key, Input); //Encode Message
 
             printf("\n-------------------------------------------\n");
             printf("Ihre Encodierte Nachricht:\n%s\n", Output); //Output encoded Message
 
-            getchar();//placed after output for less confusion in user (DAU)
 
             MEDcoder = 1;//get into case to ask user to continue
             break;
@@ -93,7 +93,7 @@ int main()
             do
             {
                 scanf("%d", &Key); //get variable key
-                getchar();
+                cbuff();
                 if(Key < 2 || Key > 10) //Check if the input is inside allowed Range
                 {
                     printf("Schluessel auserhalb des erlaubten Bereichs Zahl muss zwischen 2 und 10 sein\n");   //Tell User that his input was outside the allowed area
@@ -108,9 +108,7 @@ int main()
             printf("\n-------------------------------------------\n");
             printf("Ihre Decodierte Nachricht:\n%s\n", Output); //Output decoded Message
 
-            getchar();//placed after output for less confusion in user (DAU)
 
-            MEDcoder = 1;//get into case to ask user to continue
             break;
             //=============================================================================================
 
@@ -122,7 +120,7 @@ int main()
             {
                 MEDcoder = 1;
                 scanf("%c", &MEDcoder);
-                getchar();
+                cbuff();
                 if(!(MEDcoder == 'y' || MEDcoder == '\n'))  //Check if the input is a allowed
                 {
                     printf("Eingabe muss entweder y oder nichts sein\n");   //Tell User that his input was a illegal letter
@@ -256,4 +254,10 @@ void decode(short key, char Input[])   //decoding key is row count, Input is inp
         }
     }
     //===============================================================================================
+}
+
+//clears input buffer
+void cbuff (void){
+int buffer;
+while ((buffer = getchar()) != '\n' && buffer != EOF) { }
 }
