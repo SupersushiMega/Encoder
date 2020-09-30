@@ -3,10 +3,14 @@
 #include <string.h>
 #include <math.h>
 
-/*16.9.2020
-Erstellt von:
-Sascha Rutz
-Simon Chatziparaskewas
+/*
+Titel: En\Decoder
+Ersteller: Sascha Rutz\ Simon Chatziparaskewas
+Datum: 30.09.2020
+Dateiname: main.c
+
+Beschreibung: En\decodet max. 256 zeichen mit einem vorgegebenem schluessel.
+(gelegentlich muss 2* enter gedrueckt werden aufgrund getcher())
 */
 
 void encode(short key, char Input[]);
@@ -14,7 +18,7 @@ void decode(short key, char Input[]);
 
 unsigned char Output[260] = {0};   //The Output string
 
-short d = 0;
+
 
 int main()
 {
@@ -22,7 +26,7 @@ int main()
     short Key = 0;
     unsigned char Input[270] = {0};   //The Input string
 
-    while((MEDcoder != 'y') && (MEDcoder != 'Y'))
+    while((MEDcoder != 'y') && (MEDcoder != 'Y'))//check if user wants to quit program
     {
         if(MEDcoder != 1){
             MEDcoder = 0;
@@ -40,6 +44,8 @@ int main()
         }
        switch(MEDcoder)
        {
+           //ENCODER
+           //==============================================================================================
         case 'A':
         case 'a'://modus encoder
             printf("Sie haben den Modus Encoder Gewaehlt.\n Bitte geben sie einen gewuenschten Schluessel zwischen 2 und 10 ein.\n Dieser wird zum Decoden des Textes benoetigt.\n ");
@@ -55,17 +61,19 @@ int main()
 
             printf("Bitte geben sie die zu encodierende Nachricht ein\n");
             fgets(Input, 257, stdin);   //get message from user
-            printf("%s", Input);
             encode(Key, Input); //Encode Message
 
             printf("\n-------------------------------------------\n");
             printf("Ihre Encodierte Nachricht:\n%s\n", Output); //Output encoded Message
 
-            getchar();
+            getchar();//placed after output for less confusion in user (DAU)
 
-            MEDcoder = 1;
+            MEDcoder = 1;//get into case to ask user to continue
             break;
+            //=================================================================================================================
 
+        //DECODER
+        //=====================================================================================================================
         case 'B':
         case 'b'://modus Decoder
             printf("Sie haben den Modus Decoder Gewaehlt.\n Bitte geben den zur Nachricht gehoerenden Schluessel ein.\n ");
@@ -81,19 +89,21 @@ int main()
 
             printf("Bitte geben sie die zu decodierende Nachricht ein\n");
             fgets(Input, 270, stdin);   //get Encoded message from user
-            printf("%s", Input);
             decode(Key, Input); //Decode Message
 
             printf("\n-------------------------------------------\n");
             printf("Ihre Decodierte Nachricht:\n%s\n", Output); //Output decoded Message
 
-            getchar();
+            getchar();//placed after output for less confusion in user (DAU)
 
-            MEDcoder = 1;
+            MEDcoder = 1;//get into case to ask user to continue
             break;
+            //=============================================================================================
 
+        //check if user wants to close program
+        //=====================================================================================================
         case 1:
-            printf("Programm beenden = y\n fortfahren = enter\n ");
+            printf("Programm beenden = y\n fortfahren = enter\n ");//ask if user wants to continue
             do
             {
                 MEDcoder = 1;
