@@ -18,11 +18,10 @@ void decode(short key, char Input[]);
 
 unsigned char Output[260] = {0};   //The Output string
 
-
-
 int main()
 {
     char MEDcoder = 0;//variable mode select En/Decoder
+    char OverflowBuff[200] = {0};
     short Key = 0;
     unsigned char Input[270] = {0};   //The Input string
 
@@ -59,8 +58,22 @@ int main()
                 }
             }while(Key < 2 || Key > 10);    //Repeat if the input is outside allowed Range
 
-            printf("Bitte geben sie die zu encodierende Nachricht ein\n");
-            fgets(Input, 257, stdin);   //get message from user
+            printf("Bitte geben sie die zu encodierende Nachricht ein (Max. 256 Zeichen)\n");
+
+            do
+            {
+                getchar();
+                fgets(Input, 257, stdin);   //get message from user
+
+                //Check if message longer than 256
+                //================================================================
+                if(!(strlen(Input) < 257))
+                {
+                    printf("\nNachricht ist laenger als 256 zeichen\n");    //Inform user that message is too long
+                }
+            }while(!(strlen(Input) < 257));
+            //====================================================================
+
             encode(Key, Input); //Encode Message
 
             printf("\n-------------------------------------------\n");
@@ -89,6 +102,7 @@ int main()
 
             printf("Bitte geben sie die zu decodierende Nachricht ein\n");
             fgets(Input, 270, stdin);   //get Encoded message from user
+
             decode(Key, Input); //Decode Message
 
             printf("\n-------------------------------------------\n");
